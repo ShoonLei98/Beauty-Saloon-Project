@@ -17,6 +17,7 @@ class ItemController extends Controller
     {
         $item = [
             'item' => $request->name,
+            'available_status' => $request->rdbSaleAble,
             'remove_status' => 1,
         ];
 

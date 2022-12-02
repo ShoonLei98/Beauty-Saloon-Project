@@ -40,6 +40,7 @@
                                     <tr>
                                         <td>ID</td>
                                         <td>Name</td>
+                                        <td>Available For Sale</td>
                                         <td></td>
                                     </tr>
                                 </thead>
@@ -48,6 +49,13 @@
                                     <tr>
                                         <td>{{ $item->item_id }}</td>
                                         <td>{{ $item->item }}</td>
+                                        <td>
+                                            @if ($item->available_status == 1)
+                                                Yes
+                                            @elseif ($item->available_status == 0)
+                                                No
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('#editItem', $item->item_id) }}"><button class="btn btn-sm bg-dark text-white"><i class="fas fa-edit"></i></button></a>
                                             <a href="{{ route('#deleteItem', $item->item_id) }}"><button class="btn btn-sm bg-danger text-white"><i class="fas fa-trash-alt"></i></button></a>

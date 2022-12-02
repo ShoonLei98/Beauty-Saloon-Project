@@ -23,6 +23,20 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row mb-3">
+                                        <label for="" class="col-sm-3 col-form-label">Sale Available</label>
+                                        <div class="col-sm-9">
+                                            <div class="col">
+                                                <label for="" class="col-form-label">Yes</label>
+                                                <input type="radio" name="rdbSaleAble" id="" value="1">
+                                            </div>
+                                            <div class="col">
+                                                <label for="" class="col-form-label">No</label>
+                                                <input type="radio" name="rdbSaleAble" id="" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <p class="row offset-1 col-12">
                                         <span class="col-3">
                                             <a href="{{ route('#itemList') }}"><button type="button" class="btn btn-dark">Back</button></a>

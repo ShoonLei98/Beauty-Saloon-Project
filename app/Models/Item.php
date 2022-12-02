@@ -12,6 +12,7 @@ class Item extends Model
     protected $fillable = [
         'item_id',
         'item',
+        'available_status',
         'remove_status'
     ];
 }

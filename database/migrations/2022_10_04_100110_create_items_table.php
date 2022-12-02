@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id("item_id");
             $table->string("item");
+            $table->boolean("available_status");
             $table->boolean("remove_status");
             $table->timestamps();
         });
