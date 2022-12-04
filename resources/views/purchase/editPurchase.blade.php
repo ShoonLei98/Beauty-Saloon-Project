@@ -89,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group mb-1">
+                            {{-- <div class="form-group mb-1">
                                 <div class="row">
                                     <div class="col-sm-4" id="rdbGroup">
                                         <div class="">
@@ -113,6 +113,12 @@
                                             <input type="number" readonly name="percent" id="percent" class="form-control">
                                         </div>
                                     </div>
+                                </div>
+                            </div> --}}
+                            <div class="form-group row mb-3">
+                                <label for="" class="col-sm-5 col-form-label">Discount</label>
+                                <div class="col-sm-7">
+                                    <input type="number" name="discount" id="discount" class="form-control">
                                 </div>
                             </div>
 
@@ -214,11 +220,10 @@
                                             <th id="itemValue"></th>
                                             <th>Price</th>
                                             <th>Counter</th>
-                                            <th >Counter Name</th>
+                                            <th>Counter Name</th>
                                             <th id="counterValue"></th>
                                             <th>Quantity</th>
                                             <th>Discount</th>
-                                            <th></th>
                                             <th>Sub Total</th>
                                             <th></th>
                                         </tr>
@@ -257,7 +262,6 @@
                                                 <td>{{ $item->counter_name }}</td>
                                                 <td>{{ $item->quantity }}</td>
                                                 <td>{{ $item->discount }}</td>
-                                                <td>{{ $item->cash_percent }}</td>
                                                 <td>{{ $item->sub_total }}</td>
                                                 <td>
                                                     <button class='btn btn-info btn-sm btn-edit'><small><i class="fa-solid fa-pen-to-square"></i></small></button>
@@ -269,11 +273,11 @@
                                     </tbody>
                                     <tfoot id="tblFoot">
                                         <tr id="trTax">
-                                            <td colspan="12" style="text-align: right">Tax</td>
+                                            <td colspan="11" style="text-align: right">Tax</td>
                                             <td id="tdTax">{{ $totalData->tax }}</td>
                                         </tr>
                                         <tr id="trTotal">
-                                            <td colspan="12" style="text-align: right">Total</td>
+                                            <td colspan="11" style="text-align: right">Total</td>
                                             <td id="total">{{ $totalData->total }}</td>
                                         </tr>
                                     </tfoot>
@@ -318,23 +322,23 @@
         });
 
         // edible changes for discount radio button
-        $("input[name='rdbDiscount']").on("click", function(){
-            var value = $("input[name='rdbDiscount']:checked").val();
-            if(value == 'cash')
-            {
-                $("#cash").prop('readOnly', false);
-                $("#percent").prop('readOnly', true);
-                $("#percent").val("");
-                $("#cash").val("");
-            }
-            else if(value == 'percent')
-            {
-                $("#percent").prop('readOnly', false);
-                $("#cash").prop('readOnly', true);
-                $("#cash").val("");
-                $("#percent").val("");
-            }
-        });
+        // $("input[name='rdbDiscount']").on("click", function(){
+        //     var value = $("input[name='rdbDiscount']:checked").val();
+        //     if(value == 'cash')
+        //     {
+        //         $("#cash").prop('readOnly', false);
+        //         $("#percent").prop('readOnly', true);
+        //         $("#percent").val("");
+        //         $("#cash").val("");
+        //     }
+        //     else if(value == 'percent')
+        //     {
+        //         $("#percent").prop('readOnly', false);
+        //         $("#cash").prop('readOnly', true);
+        //         $("#cash").val("");
+        //         $("#percent").val("");
+        //     }
+        // });
 
         // select 2 for item
         // $('.itemSelect').select2();
@@ -358,6 +362,7 @@
         var price = parseInt($("#price").val());   
         var counter = $("#counterSel").val();
         var quantity = parseInt($("#quantity").val());
+        var discount = parseInt($("#discount").val());
         var tax = parseInt($("#tax").val());
 
         // to get item name and counter name
@@ -438,33 +443,36 @@
         tdQuantity = "<td>"+ quantity +"</td>";
         $(trRow).append(tdQuantity);
 
+        tdDiscount = "<td>"+ discount +"</td>";
+        $(trRow).append(tdDiscount);
+
          // add discount value in table
-         var value = $("input[name='rdbDiscount']:checked").val();
-        if(value == 'cash')
-        {
-            discount = parseInt($("#cash").val());
-            subTotal = (price * quantity) - discount;
-            rdbValue = 1;
+        //  var value = $("input[name='rdbDiscount']:checked").val();
+        // if(value == 'cash')
+        // {
+        //     discount = parseInt($("#cash").val());
+        //     subTotal = (price * quantity) - discount;
+        //     rdbValue = 1;
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
-        else
-        {
-            discount = parseInt($("#percent").val());
-            percentDiscount = (discount / 100) * (price * quantity);
-            subTotal = (price * quantity) - percentDiscount;
-            rdbValue = 0;
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
+        // else
+        // {
+        //     discount = parseInt($("#percent").val());
+        //     percentDiscount = (discount / 100) * (price * quantity);
+        //     subTotal = (price * quantity) - percentDiscount;
+        //     rdbValue = 0;
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
         
-        // subTotal = (price * quantity) - discount;
+        subTotal = (price * quantity) - discount;
         tdSubTotal = "<td>"+ subTotal +"</td>";
         $(trRow).append(tdSubTotal);
 
@@ -479,6 +487,7 @@
         let total = $("#total").text();
         allTotal = parseInt(subTotal) + parseInt(total);
 
+        // to add tax only once 
         taxStatus ++;
         if(taxStatus == 1)
         {
@@ -506,15 +515,11 @@
     {
         $("#purchaseID").val("");
         $("#itemSel").val(0);
-        $("#price").val(""); 
+        $("#price").val(0); 
         $("#chkCounter").prop("checked" , false);
         $("#counterSel").val(0);
-        $("#quantity").val("");
-        $("#cash").val("");
-        $("#cash").prop('readOnly' , false);
-        $("#cash").prop('checked', true);
-        $("#percent").val("");
-        $("#percent").prop('readOnly', true);
+        $("#quantity").val(0);
+        $("#discount").val(0)
     }
 
     //edit event from table row
@@ -537,7 +542,6 @@
         $counterValue = $(this).parents("tr").find("td:eq(8)").text();
         $quantity = $(this).parents("tr").find("td:eq(9)").text();
         $discount = $(this).parents("tr").find("td:eq(10)").text();
-        $discountValue = $(this).parents("tr").find("td:eq(11)").text();
         $tax = $("#tdTax").text();
         $total = $("#total").text();
 
@@ -573,22 +577,22 @@
         $("#tax").val($tax);
         $("#price").val($price);
         $("#quantity").val($quantity);
-        // $("#discount").val($discount);
+        $("#discount").val($discount);
 
-        if($discountValue == 1)
-        {
-            $("#radioCash").prop('checked', true);
-            $("#cash").val($discount);
-            $("#cash").prop('readOnly', false);
-            $("#percent").prop('readOnly', true);
-        }
-        else{
+        // if($discountValue == 1)
+        // {
+        //     $("#radioCash").prop('checked', true);
+        //     $("#cash").val($discount);
+        //     $("#cash").prop('readOnly', false);
+        //     $("#percent").prop('readOnly', true);
+        // }
+        // else{
             
-            $("#radioPercent").prop('checked', true);
-            $("#percent").val($discount);
-            $("#percent").prop('readOnly', false);
-            $("#cash").prop('readOnly', true);
-        }
+        //     $("#radioPercent").prop('checked', true);
+        //     $("#percent").val($discount);
+        //     $("#percent").prop('readOnly', false);
+        //     $("#cash").prop('readOnly', true);
+        // }
 
         $(this).parents("tr").addClass('highlight');
     });
@@ -687,7 +691,7 @@
         var price = parseInt($("#price").val());   
         var counterValue = $("#counterSel").val();
         var quantity = parseInt($("#quantity").val());
-        // var discount = parseInt($("#discount").val());
+        var discount = parseInt($("#discount").val());
          
         var tax = $("#tax").val();
         var total = parseInt($("#total").text());
@@ -721,7 +725,7 @@
         table.find('tr').each(function(i){
             if($(this).hasClass('highlight'))
             {
-                sub = parseInt($(this).find("td:eq(12)").text());
+                sub = parseInt($(this).find("td:eq(11)").text());
                 allTotal = total - sub;
                 $(this).find("td:eq(0)").text(purchaseID);
                 $(this).find("td:eq(1)").text(voucher);
@@ -745,31 +749,33 @@
                 $(this).find("td:eq(7)").text(counterName);
                 $(this).find("td:eq(8)").text(counterValue);
                 $(this).find("td:eq(9)").text(quantity);
+                $(this).find("td:eq(10)").text(discount);
+                subTotal = (price * quantity) - discount;
 
                 // add discount value in table
-                var value = $("input[name='rdbDiscount']:checked").val();
-                if(value == 'cash')
-                {
-                    discount = parseInt($("#cash").val());
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 1;
-                    $(this).find("td:eq(10)").text(discount);
-                    $(this).find("td:eq(11)").text(rdbValue);
+                // var value = $("input[name='rdbDiscount']:checked").val();
+                // if(value == 'cash')
+                // {
+                //     discount = parseInt($("#cash").val());
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 1;
+                //     $(this).find("td:eq(10)").text(discount);
+                //     $(this).find("td:eq(11)").text(rdbValue);
 
-                }
-                else
-                {
-                    percent = parseInt($("#percent").val());
-                    discount = (percent / 100) * (price * quantity);
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 0;
+                // }
+                // else
+                // {
+                //     percent = parseInt($("#percent").val());
+                //     discount = (percent / 100) * (price * quantity);
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 0;
 
-                    $(this).find("td:eq(10)").text(percent);
-                    $(this).find("td:eq(11)").text(rdbValue);
+                //     $(this).find("td:eq(10)").text(percent);
+                //     $(this).find("td:eq(11)").text(rdbValue);
 
-                }
+                // }
 
-                $(this).find("td:eq(12)").text(subTotal);
+                $(this).find("td:eq(11)").text(subTotal);
 
             }
         });
@@ -818,8 +824,7 @@
             counterValue = $tds.eq(8).text();
             quantity = $tds.eq(9).text();
             discount = $tds.eq(10).text();
-            $discountValue = $tds.eq(11).text();
-            subTotal = $tds.eq(12).text();
+            subTotal = $tds.eq(11).text();
             tax = $("#tdTax").text();
             total = $("#total").text();
 
@@ -837,7 +842,6 @@
                 // 'counterValue' : counterValue,
                 'quantity' : quantity,
                 'discount' : discount,
-                'cash_percent' : $discountValue,
                 'sub_total' : subTotal,
                 //'subTotal' : subTotal,
                 'tax' : tax,

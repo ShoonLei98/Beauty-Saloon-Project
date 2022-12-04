@@ -42,6 +42,16 @@ rel="stylesheet"
                       <div class="col">
                         <div class="card">
                           <div class="card-body">
+                            <a href="{{ route('#promotionList') }}" class="text-black"><h5 class="card-title">Promotion</h5></a>
+                            <p class="card-text">
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col">
+                        <div class="card">
+                          <div class="card-body">
                             <a href="{{ route('#inventoryList') }}" class="text-black"><h5 class="card-title">Inventory</h5></a>
                             <p class="card-text">
                             </p>

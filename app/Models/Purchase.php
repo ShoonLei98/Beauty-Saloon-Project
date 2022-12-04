@@ -19,7 +19,6 @@ class Purchase extends Model
       'counter_name',
       'quantity',
       'discount',
-      'cash_percent',
       'tax',
       'sub_total',
       'total',

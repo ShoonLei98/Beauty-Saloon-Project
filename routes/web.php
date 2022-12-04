@@ -13,6 +13,7 @@ use App\Http\Controllers\DailyExpenseController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MonthlyExpenseController;
+use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ServiceInvoiceController;
 use App\Http\Controllers\YearlyExpenseController;
@@ -34,6 +35,17 @@ Route::prefix('item')->group(function () {
 Route::prefix('inventory')->group(function () {
     Route::get('/', [InventoryController::class, 'index'])->name('#inventoryList');
     Route::get('searchItem', [InventoryController::class, 'searchItem'])->name('#searchItem');
+}); 
+
+Route::prefix('promotion')->group(function () {
+    Route::get('/', [PromotionController::class, 'index'])->name('#promotionList');
+    Route::get('ajaxList', [PromotionController::class, 'ajaxList'])->name('#ajaxList');
+    Route::post('dateSearch',[PromotionController::class, 'dateList'])->name('#dateList');
+    Route::get('createPromotion',[PromotionController::class, 'addPromotion'])->name('#addPromotion');
+    Route::post('insertPromotion', [PromotionController::class, 'insertPromotion'])->name('#insertPromotion');
+    Route::get('editPromotion/{id}', [PromotionController::class, 'editPromotion'])->name('#editPromotion');
+    Route::post('updatePromotion', [PromotionController::class, 'updatePromotion'])->name('#updatePromotion');
+    Route::get('deletePromotion/{id}', [PromotionController::class, 'deletePromotion'])->name('#deletePromotion');
 }); 
 
 Route::prefix('counter')->group(function () {

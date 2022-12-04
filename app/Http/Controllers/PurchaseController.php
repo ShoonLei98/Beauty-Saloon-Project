@@ -16,7 +16,9 @@ class PurchaseController extends Controller
     //call from ajax 
     public function ajaxData()
     {
-        $item = Item::where('remove_status', 1)->get();
+        $item = Item::where('remove_status', 1)
+                    ->where('available_status', 1)
+                    ->get();
         // dd($item);
         $counter = Counter::where('remove_status', 1)->get();
         // dd($counter);
@@ -34,7 +36,9 @@ class PurchaseController extends Controller
     //process to add purchase item
     public function addPurchase()
     {
-        $item = Item::where('remove_status', 1)->get();
+        $item = Item::where('remove_status', 1)
+                    ->where('available_status', 1)
+                    ->get();
         $counter = Counter::where('remove_status', 1)->get();
         return view('purchase.purchase')->with(['data' => $item, 'counter' => $counter]);
     }
@@ -55,7 +59,9 @@ class PurchaseController extends Controller
     //edit process of purchase item
     public function editPurchase($id)
     {
-        $item = Item::where('remove_status', 1)->get();
+        $item = Item::where('remove_status', 1)
+                    ->where('available_status', 1)
+                    ->get();
         $counter = Counter::where('remove_status', 1)->get();
 
         //for edit view
@@ -120,7 +126,6 @@ class PurchaseController extends Controller
             'counter_name' => $request['counter_name'],
             'quantity' => $request['quantity'],
             'discount' => $request['discount'],
-            'cash_percent' => $request['cash_percent'],
             'sub_total' => $request['sub_total'],
             'tax' => $request['tax'],
             'total' => $request['total'],

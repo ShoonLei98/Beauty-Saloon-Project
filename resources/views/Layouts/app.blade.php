@@ -68,6 +68,10 @@ rel="stylesheet"
             </li> 
 
             <li class="nav-item">
+              <a class="nav-link" href="{{ route('#promotionList') }}">Promotion</a>
+            </li> 
+
+            <li class="nav-item">
               <a class="nav-link" href="{{ route('#inventoryList') }}">Inventory</a>
             </li> 
 

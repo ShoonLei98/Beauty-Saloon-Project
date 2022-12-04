@@ -23,6 +23,8 @@
                 <form action="" class="form-horizontal" method="">
                     {{-- @csrf --}}
                     <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                    <input type="text" name="itemID" id="itemID" style="display: none">
+                    <input type="text" name="counterID" id="counterID" style="display: none">
 
                     <div class="row form-group mb-3">
                         <label for="" class="col-sm-1 col-form-label">Voucher</label>
@@ -110,7 +112,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group mb-1">
+                            {{-- <div class="form-group mb-1">
                                 <div class="row">
                                     <div class="col-sm-4" id="rdbGroup">
                                         <div class="">
@@ -135,43 +137,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-sm-4">
-                                        <label for="">
-                                            <input type="radio" checked name="rdbDiscount" id="radioDiscount" value="cash"> 
-                                            <i class="fa-solid fa-money-bill-1"></i>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="number" name="cash" id="cash" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-sm-4">
-                                        <label for="" class="">
-                                            <input type="radio" name="rdbDiscount" id="radioDiscount" value="percent"> 
-                                            <i class="fa-solid fa-percent"></i>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="number" name="percent" id="discount" class="form-control">
-                                    </div>
-                                </div> --}}
-                            </div>
-                            <div class="form-group row mb-3">
-                                {{-- <label for="" class="col-sm-5 col-form-label">Discount</label> --}}
-                                {{-- <div class="col-sm-7">
-                                    <input type="number" name="discount" id="discount" class="form-control">
-                                </div> --}}
-                            </div>
-
-                            {{-- <div class="form-group row mb-3">
-                                <label for="" class="col-sm-5 col-form-label">Tax</label>
-                                <div class="col-sm-7">
-                                    <input type="number" name="tax" id="tax" class="form-control">
-                                </div>
                             </div> --}}
-
+                            <div class="form-group row mb-3">
+                                <label for="" class="col-sm-5 col-form-label">Discount</label>
+                                <div class="col-sm-7">
+                                    <input type="number" name="discount" id="discount" class="form-control">
+                                </div>
+                            </div>
 
                             <div class="row mb-2" id="divAdd" style="display:block">
                                 {{-- <span class="col-sm-4">
@@ -202,14 +174,13 @@
                                             <th>Voucher</th>
                                             <th>Date</th>
                                             <th>Item</th>
-                                            <th id="itemValue"></th>
+                                            <th id="itemValue">item id</th>
                                             <th>Price</th>
                                             <th>Counter</th>
-                                            <th >Counter Name</th>
-                                            <th id="counterValue"></th>
+                                            <th>Counter Name</th>
+                                            <th id="counterValue">counterid</th>
                                             <th>Quantity</th>
                                             <th>Discount</th>
-                                            <th></th>
                                             <th>Sub Total</th>
                                             <th></th>
                                         </tr>
@@ -219,11 +190,11 @@
                                     </tbody>
                                     <tfoot id="tblFoot">
                                         <tr id="trTax">
-                                            <td colspan="11" style="text-align: right">Tax</td>
+                                            <td colspan="10" style="text-align: right">Tax</td>
                                             <td id="tdTax">0</td>
                                         </tr>
                                         <tr id="trTotal">
-                                            <td colspan="11" style="text-align: right">Total</td>
+                                            <td colspan="10" style="text-align: right">Total</td>
                                             <td id="total">0</td>
                                         </tr>
                                     </tfoot>
@@ -266,22 +237,22 @@
             }
         });
 
-        // edible changes for discount radio button
-        $("input[name='rdbDiscount']").on("click", function(){
-            var value = $("input[name='rdbDiscount']:checked").val();
-            if(value == 'cash')
-            {
-                $("#cash").prop('readOnly', false);
-                $("#percent").prop('readOnly', true);
-                $("#percent").val("");
-            }
-            else if(value == 'percent')
-            {
-                $("#percent").prop('readOnly', false);
-                $("#cash").prop('readOnly', true);
-                $("#cash").val("");
-            }
-        });
+        // // edible changes for discount radio button
+        // $("input[name='rdbDiscount']").on("click", function(){
+        //     var value = $("input[name='rdbDiscount']:checked").val();
+        //     if(value == 'cash')
+        //     {
+        //         $("#cash").prop('readOnly', false);
+        //         $("#percent").prop('readOnly', true);
+        //         $("#percent").val("");
+        //     }
+        //     else if(value == 'percent')
+        //     {
+        //         $("#percent").prop('readOnly', false);
+        //         $("#cash").prop('readOnly', true);
+        //         $("#cash").val("");
+        //     }
+        // });
 
         // select 2 for item
         // $('.itemSelect').select2();
@@ -303,7 +274,7 @@
         var price = parseInt($("#price").val());   
         var counter = $("#counterSel").val();
         var quantity = parseInt($("#quantity").val());
-
+        var discount = parseInt($("#discount").val());
        
         var tax = parseInt($("#tax").val());
 
@@ -348,7 +319,7 @@
 
         tdItem = "<td>"+ itemName +"</td>";
         $(trRow).append(tdItem);
-
+        // $("#itemID").val(item);
         tdItemValue = "<td>"+ item +"</td>";;
         // $(tdItemValue).text(item);
         // $(tdItemValue).hide();
@@ -375,39 +346,43 @@
         
         tdCounterName = "<td>"+ counterName +"</td>";
         $(trRow).append(tdCounterName);
+        // $("#counterID").val(counter);
         tdCounterValue = "<td>"+ counter +"</td>";
         $(trRow).append(tdCounterValue);
 
         tdQuantity = "<td>"+ quantity +"</td>";
         $(trRow).append(tdQuantity);
 
-         // add discount value in table
-         var value = $("input[name='rdbDiscount']:checked").val();
-        if(value == 'cash')
-        {
-            discount = parseInt($("#cash").val());
-            subTotal = (price * quantity) - discount;
-            rdbValue = 1;
+        tdDiscount = "<td>"+ discount +"</td>";
+        $(trRow).append(tdDiscount);
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
-        else
-        {
-            discount = parseInt($("#percent").val());
-            percentDiscount = (discount / 100) * (price * quantity);
-            subTotal = (price * quantity) - percentDiscount;
-            rdbValue = 0;
+        //  // add discount value in table
+        //  var value = $("input[name='rdbDiscount']:checked").val();
+        // if(value == 'cash')
+        // {
+        //     discount = parseInt($("#cash").val());
+        //     subTotal = (price * quantity) - discount;
+        //     rdbValue = 1;
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
+        // else
+        // {
+        //     discount = parseInt($("#percent").val());
+        //     percentDiscount = (discount / 100) * (price * quantity);
+        //     subTotal = (price * quantity) - percentDiscount;
+        //     rdbValue = 0;
+
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
         
-        // subTotal = (price * quantity) - discount;
+        subTotal = (price * quantity) - discount;
         tdSubTotal = "<td>"+ subTotal +"</td>";
         $(trRow).append(tdSubTotal);
 
@@ -466,21 +441,21 @@
 
         //put discount in input box
         
-        $discountValue = $(this).parents("tr").find("td:eq(10)").text();
-        if($discountValue == 1)
-        {
-            $("#radioCash").prop('checked', true);
-            $("#cash").val($discount);
-            $("#cash").prop('readOnly', false);
-            $("#percent").prop('readOnly', true);
-        }
-        else{
+        // $discountValue = $(this).parents("tr").find("td:eq(10)").text();
+        // if($discountValue == 1)
+        // {
+        //     $("#radioCash").prop('checked', true);
+        //     $("#cash").val($discount);
+        //     $("#cash").prop('readOnly', false);
+        //     $("#percent").prop('readOnly', true);
+        // }
+        // else{
             
-            $("#radioPercent").prop('checked', true);
-            $("#percent").val($discount);
-            $("#percent").prop('readOnly', false);
-            $("#cash").prop('readOnly', true);
-        }
+        //     $("#radioPercent").prop('checked', true);
+        //     $("#percent").val($discount);
+        //     $("#percent").prop('readOnly', false);
+        //     $("#cash").prop('readOnly', true);
+        // }
 
         $tax = $("#tdTax").text();
         $total = $("#total").text();
@@ -516,7 +491,7 @@
         $("#tax").val($tax);
         $("#price").val($price);
         $("#quantity").val($quantity);
-        // $("#discount").val($discount);
+        $("#discount").val($discount);
 
         //add highlight class name to know which row is selected
         $(this).parents("tr").addClass('highlight');
@@ -563,13 +538,12 @@
                 }
             }
         });
-        // to get item and counter name
 
-        
+        //get data from table row
         table.find('tr').each(function(i){
             if($(this).hasClass('highlight'))
             {
-                sub = parseInt($(this).find("td:eq(11)").text());
+                sub = parseInt($(this).find("td:eq(10)").text());
                 allTotal = total - sub;
                 $(this).find("td:eq(0)").text(voucher);
                 $(this).find("td:eq(1)").text(date);
@@ -592,31 +566,33 @@
                 $(this).find("td:eq(6)").text(counterName);
                 $(this).find("td:eq(7)").text(counterValue);
                 $(this).find("td:eq(8)").text(quantity);
+                $(this).find("td:eq(9)").text(discount);
+                subTotal = (price * quantity) - discount;
 
                 // add discount value in table
-                var value = $("input[name='rdbDiscount']:checked").val();
-                if(value == 'cash')
-                {
-                    discount = parseInt($("#cash").val());
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 1;
-                    $(this).find("td:eq(9)").text(discount);
-                    $(this).find("td:eq(10)").text(rdbValue);
+                // var value = $("input[name='rdbDiscount']:checked").val();
+                // if(value == 'cash')
+                // {
+                //     discount = parseInt($("#cash").val());
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 1;
+                //     $(this).find("td:eq(9)").text(discount);
+                //     $(this).find("td:eq(10)").text(rdbValue);
 
-                }
-                else
-                {
-                    percent = parseInt($("#percent").val());
-                    discount = (percent / 100) * (price * quantity);
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 0;
+                // }
+                // else
+                // {
+                //     percent = parseInt($("#percent").val());
+                //     discount = (percent / 100) * (price * quantity);
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 0;
 
-                    $(this).find("td:eq(9)").text(percent);
-                    $(this).find("td:eq(10)").text(rdbValue);
+                //     $(this).find("td:eq(9)").text(percent);
+                //     $(this).find("td:eq(10)").text(rdbValue);
 
-                }
+                // }
 
-                $(this).find("td:eq(11)").text(subTotal);
+                $(this).find("td:eq(10)").text(subTotal);
 
             }
         });
@@ -655,13 +631,15 @@
         $("#chkCounter").prop("checked" , false);
         $("#counterSel").val(0);
         $("#quantity").val(0);
-        $("#cash").val(0);
-        $("#cash").prop('readOnly' , false);
-        $("#cash").prop('checked', true);
-        $("#percent").val(0);
-        $("#percent").prop('readOnly', true);
+        $("#discount").val(0);
+        // $("#cash").val(0);
+        // $("#cash").prop('readOnly' , false);
+        // $("#cash").prop('checked', true);
+        // $("#percent").val(0);
+        // $("#percent").prop('readOnly', true);
     }
 
+    // save data to database
     function save(){
         var $ary = [];
         var voucher, date, item, itemValue, price, counter, counterName, quantity, discount, tax;
@@ -690,8 +668,7 @@
             counterValue = $tds.eq(7).text();
             quantity = $tds.eq(8).text();
             discount = $tds.eq(9).text();
-            $discountValue = $tds.eq(10).text();
-            subTotal = $tds.eq(11).text();
+            subTotal = $tds.eq(10).text();
             tax = $("#tdTax").text();
             total = $("#total").text();
 
@@ -708,7 +685,6 @@
                 // 'counterValue' : counterValue,
                 'quantity' : quantity,
                 'discount' : discount,
-                'cash_percent' : $discountValue,
                 'sub_total' : subTotal,
                 //'subTotal' : subTotal,
                 'tax' : tax,
@@ -717,7 +693,7 @@
             };
             $ary.push($purchase);
         });
-
+        console.log($ary);
         $.ajax({
                 type        : "get",
                 url         : "{{ route('#createPurchase') }}",

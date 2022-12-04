@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string("counter_name")->nullable();
             $table->string("quantity");
             $table->string("discount")->nullable();
-            $table->string("cash_percent")->nullable();
             $table->string("tax")->nullable();
             $table->string("sub_total");
             $table->string("total");
