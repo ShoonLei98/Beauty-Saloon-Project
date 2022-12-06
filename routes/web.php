@@ -124,12 +124,13 @@ Route::group(['prefix' => 'invoice'], function(){
     Route::post('createNewService', [ServiceInvoiceController::class, 'addNewService'])->name('#createNewService');
 
     Route::get('ajaxSaleData', [SaleController::class, 'ajaxData'])->name('#ajaxSaleDataList');
+    Route::get('ajaxItemList', [SaleController::class, 'ajaxItemList'])->name('#ajaxItemList');
     Route::get('/', [SaleController::class, 'index'])->name('#saleInvoiceList');
     Route::get('addSaleInvoice', [SaleController::class, 'addSaleInvoice'])->name('#addSaleInvoice');
     Route::get('createSaleInvoice', [SaleController::class, 'createSaleInvoice'])->name('#createSaleInvoice');
-    Route::get('editSaleInvoice/{id}', [SaleController::class, 'editSaleInvoice'])->name('#editSaleInvoice');
-    Route::post('updateSaleInvoice', [SaleController::class, 'updateSaleInvoice'])->name('#updateSaleInvoice');
-    Route::get('deleteSaleInvoice/{id}', [SaleController::class, 'deleteSaleInvoice'])->name('#deleteSaleInvoice');
+    Route::get('editSaleInvoice/{voucherId}/{voucherCode}', [SaleController::class, 'editSaleInvoice'])->name('#editSaleInvoice');
+    Route::get('updateSaleInvoice', [SaleController::class, 'updateSaleInvoice'])->name('#updateSaleInvoice');
+    Route::get('deleteSaleInvoice/{voucherId}/{voucherCode}', [SaleController::class, 'deleteSaleInvoice'])->name('#deleteSaleInvoice');
 });
 
 Route::group(['prefix' => 'general/expense'], function(){

@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
+class SaleVoucherDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
-        'voucher_id',
+        'v_detail_id',
+        'voucher_code',
+        'date',
         'item',
         'price',
         'quantity',
-        'discount',
-        'cash_percent',
+        'promotion',
         'sub_total',
-        'remove_status',
-      ];
+        'remove_status'
+    ];
 }

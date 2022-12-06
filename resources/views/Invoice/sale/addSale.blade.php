@@ -112,13 +112,39 @@
                                 </select>
                             </div>
                         </div>
-    
+                        
+                        <div class="form-group row mb-3">
+                            <label for="" class="col-sm-4 col-form-label">Promotion</label>
+                            <div class="col-sm-8">
+                                <input type="number" readonly name="promotion" id="promotion" value="0" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-3">
                             <label for="" class="col-sm-4 col-form-label">Price</label>
                             <div class="col-sm-8">
                                 <input type="number" name="price" id="price" value="0" class="form-control">
                             </div>
                         </div>
+
+                        {{-- <div class="form-group row mb-3">
+                            <label for="" class="col-sm-4 col-form-label">Card</label>
+                            <div class="col-sm-8">
+                                <select name="card" id="cardSel" class="itemSelect form-control">
+                                    <option value=0>Choose Card</option>
+                                    @foreach ($card as $item)
+                                        <option value="{{ $item->card_id }}">{{ $item->card_number }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="" class="col-sm-5 col-form-label"> Card Discount</label>
+                            <div class="col-sm-7">
+                                <input type="number" readonly name="discount" id="discount" class="form-control">
+                            </div>
+                        </div>  --}}
     
                         <div class="form-group row mb-3">
                             <label for="" class="col-sm-5 col-form-label">Quantity</label>
@@ -127,7 +153,7 @@
                             </div>
                         </div>
     
-                        <div class="form-group mb-1">
+                        {{-- <div class="form-group mb-1">
                             <div class="row">
                                 <div class="col-sm-4" id="rdbGroup">
                                     <div class="">
@@ -152,27 +178,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-    
-                        {{-- <div class="form-group row mb-3">
-                            <label for="" class="col-sm-5 col-form-label">Discount</label>
-                            <div class="col-sm-7">
-                                <input type="number" name="discount" id="discount" class="form-control">
-                            </div>
-                        </div> --}}
-    
-                        {{-- <div class="form-group row mb-3">
-                            <label for="" class="col-sm-5 col-form-label">Tax</label>
-                            <div class="col-sm-7">
-                                <input type="number" name="tax" id="tax" class="form-control">
-                            </div>
-                        </div> --}}
-    
+                        </div> --}} 
     
                         <div class="row mb-2" id="divAdd" style="display:block">
-                            {{-- <span class="col-sm-4">
-                                <a href="{{ route('#purchaseList') }}"><button type="button" class="btn btn-dark">Back</button></a>
-                            </span> --}}
                             <input type="button" value="Add" onclick="addPurchase()" class="btn btn-dark  col-sm-4">
                         </div>
     
@@ -180,14 +188,11 @@
                             <span class="col-sm-5" >
                                <button type="button" class="btn btn-dark text-center" onclick="edit()">Edit</button>                                    
                             </span>
-                            {{-- <input type="button" value="Add" onclick="addPurchase()" class="btn btn-dark  col-sm-4"> --}}
                             <span class="col-sm-7">
                                 <button type="button" class="btn btn-dark" style="text-align: left">Cancel</button>
                             </span>
                         </div>
                     </div>
-    
-                    {{-- <div class="col-1"></div> --}}
     
                     {{-- for table area --}}
                     <div class="col-10 border border-1" style="border-radius: 15px">
@@ -200,8 +205,9 @@
                                         <th id="itemValue"></th>
                                         <th>Price</th>
                                         <th>Quantity</th>
-                                        <th>Discount</th>
-                                        <th></th>
+                                        {{-- <th>Card</th> --}}
+                                        <th>Promotion Discount</th>
+                                        {{-- <th>Card Discount</th> --}}
                                         <th>Sub Total</th>
                                         <th></th>
                                     </tr>
@@ -211,11 +217,11 @@
                                 </tbody>
                                 <tfoot id="tblFoot">
                                     <tr id="trTax">
-                                        <td colspan="7" style="text-align: right">Tax</td>
+                                        <td colspan="6" style="text-align: right">Tax</td>
                                         <td id="tdTax">0</td>
                                     </tr>
                                     <tr id="trTotal">
-                                        <td colspan="7" style="text-align: right">Total</td>
+                                        <td colspan="6" style="text-align: right">Total</td>
                                         <td id="total">0</td>
                                     </tr>
                                 </tfoot>
@@ -223,9 +229,6 @@
     
                         </div>
                         <p class="row offset-1 col-12">
-                            {{-- <span class="col-3">
-                                <a href="{{ route('#purchaseList') }}"><button type="button" class="btn btn-dark">Back</button></a>
-                            </span> --}}
                             <span class="col-5"></span>
                             <span class="col-3">
                                 <button type="button" id="btnSave" onclick="save()" class="btn btn-success text-right" style="text-align: right">Save</button>
@@ -245,31 +248,55 @@
 <script>
 $(document).ready(function(e){
      // edible changes for discount radio button
-     $("input[name='rdbDiscount']").on("click", function(){
-            var value = $("input[name='rdbDiscount']:checked").val();
-            if(value == 'cash')
-            {
-                $("#cash").prop('readOnly', false);
-                $("#percent").prop('readOnly', true);
-                $("#percent").val("0");
-            }
-            else if(value == 'percent')
-            {
-                $("#percent").prop('readOnly', false);
-                $("#cash").prop('readOnly', true);
-                $("#cash").val("0");
+    //  $("input[name='rdbDiscount']").on("click", function(){
+    //         var value = $("input[name='rdbDiscount']:checked").val();
+    //         if(value == 'cash')
+    //         {
+    //             $("#cash").prop('readOnly', false);
+    //             $("#percent").prop('readOnly', true);
+    //             $("#percent").val("0");
+    //         }
+    //         else if(value == 'percent')
+    //         {
+    //             $("#percent").prop('readOnly', false);
+    //             $("#cash").prop('readOnly', true);
+    //             $("#cash").val("0");
+    //         }
+    //     });
+
+    // item select change
+    $("#itemSel").change(function(){
+        $itemID = $("#itemSel").val();
+        // $cardID = $("#cardSel").val();
+        $date = $("#date").val();
+        $itemName = '', $promotion = '';
+        // to get item info 
+        $.ajax({
+            type        : 'get',
+            url         : "{{ route('#ajaxSaleDataList') }}",
+            dataType    : 'json',
+            data        : {date : $date, itemID : $itemID},
+            async       : false,
+            success     : function(response){
+                    if ($itemID == response.item.item_id) {
+                        $itemName = response.item.item;
+                        $promotion = response.item.promotion; 
+                    } 
             }
         });
-
+        if($promotion != '')
+        {
+            $("#promotion").val($promotion);
+        }
+        else
+        $("#promotion").val(0);
+    });
 });
 
     //onclick function for Add button
     var taxStatus = 0;
     function addPurchase()
     {
-        //   $('td:nth-child(4),th:nth-child(4)').hide();
-        //   $('td:nth-child(4)').hide();
-        // $('#tblID th:nth-child('+ 3 +')').hide();
         var trRow,tdItem,chkbox,chebox1,itemName,counterName,discount,rdbValue,allTotal;
 
         // get data from html page
@@ -277,24 +304,24 @@ $(document).ready(function(e){
         var item = $("#itemSel").val();
         var price = parseInt($("#price").val());
         var quantity = parseInt($("#quantity").val());
-
+        var discount = parseInt($("#promotion").val());
         var tax = parseInt($("#tax").val());
 
-        // to get item name and counter name
+        // to get item name start
         $.ajax({
             type        : 'get',
-            url         : "{{ route('#ajaxSaleDataList') }}",
+            url         : "{{ route('#ajaxItemList') }}",
             dataType    : 'json',
             async       : false,
             success     : function(response){
-                for (let i = 0; i < response.item.length; i++) {
-                    if (item == response.item[i].item_id) {
-                        itemName = response.item[i].item;                      
+                for (let i = 0; i < response.itemList.length; i++) {
+                    if (item == response.itemList[i].item_id) {
+                        itemName = response.itemList[i].item;                      
                     }                   
                 }
             }
         });
-        // to get item and counter name
+        // to get item name end
 
         //set data to table row
         trRow = $("<tr>");
@@ -306,9 +333,7 @@ $(document).ready(function(e){
         tdItem = "<td>"+ itemName +"</td>";
         $(trRow).append(tdItem);
 
-        tdItemValue = "<td>"+ item +"</td>";;
-        // $(tdItemValue).text(item);
-        // $(tdItemValue).hide();
+        tdItemValue = "<td>"+ item +"</td>";
         $(trRow).append(tdItemValue);
         
         tdPrice = "<td>"+ price +"</td>";
@@ -317,34 +342,37 @@ $(document).ready(function(e){
         tdQuantity = "<td>"+ quantity +"</td>";
         $(trRow).append(tdQuantity);
 
+        tdDiscount = "<td>"+ discount +"</td>";
+        $(trRow).append(tdDiscount);
+
         // add discount value in table
-        var value = $("input[name='rdbDiscount']:checked").val();
-        if(value == 'cash')
-        {
-            discount = parseInt($("#cash").val());
-            subTotal = (price * quantity) - discount;
-            rdbValue = 1;
+        // var value = $("input[name='rdbDiscount']:checked").val();
+        // if(value == 'cash')
+        // {
+        //     discount = parseInt($("#cash").val());
+        //     subTotal = (price * quantity) - discount;
+        //     rdbValue = 1;
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
-        else
-        {
-            discount = parseInt($("#percent").val());
-            percentDiscount = (discount / 100) * (price * quantity);
-            subTotal = (price * quantity) - percentDiscount;
-            rdbValue = 0;
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
+        // else
+        // {
+        //     discount = parseInt($("#percent").val());
+        //     percentDiscount = (discount / 100) * (price * quantity);
+        //     subTotal = (price * quantity) - percentDiscount;
+        //     rdbValue = 0;
 
-            tdDiscount = "<td>"+ discount +"</td>";
-            $(trRow).append(tdDiscount);
-            tdRdb = "<td>"+ rdbValue +"</td>";
-            $(trRow).append(tdRdb);
-        }
+        //     tdDiscount = "<td>"+ discount +"</td>";
+        //     $(trRow).append(tdDiscount);
+        //     tdRdb = "<td>"+ rdbValue +"</td>";
+        //     $(trRow).append(tdRdb);
+        // }
 
 
-        // subTotal = (price * quantity) - discount;
+        subTotal = (price * quantity) - discount;
         tdSubTotal = "<td>"+ subTotal +"</td>";
         $(trRow).append(tdSubTotal);
 
@@ -399,21 +427,21 @@ $(document).ready(function(e){
 
         //put discount in input box
         
-        $discountValue = $(this).parents("tr").find("td:eq(6)").text();
-        if($discountValue == 1)
-        {
-            $("#radioCash").prop('checked', true);
-            $("#cash").val($discount);
-            $("#cash").prop('readOnly', false);
-            $("#percent").prop('readOnly', true);
-        }
-        else{
+        // $discountValue = $(this).parents("tr").find("td:eq(6)").text();
+        // if($discountValue == 1)
+        // {
+        //     $("#radioCash").prop('checked', true);
+        //     $("#cash").val($discount);
+        //     $("#cash").prop('readOnly', false);
+        //     $("#percent").prop('readOnly', true);
+        // }
+        // else{
             
-            $("#radioPercent").prop('checked', true);
-            $("#percent").val($discount);
-            $("#percent").prop('readOnly', false);
-            $("#cash").prop('readOnly', true);
-        }
+        //     $("#radioPercent").prop('checked', true);
+        //     $("#percent").val($discount);
+        //     $("#percent").prop('readOnly', false);
+        //     $("#cash").prop('readOnly', true);
+        // }
 
         $tax = $("#tdTax").text();
         $total = $("#total").text();
@@ -421,15 +449,15 @@ $(document).ready(function(e){
         //to get item name and counter name
         $.ajax({
             type        : 'get',
-            url         : "{{ route('#ajaxSaleDataList') }}",
+            url         : "{{ route('#ajaxItemList') }}",
             dataType    : 'json',
             async       : false,
             success     : function(response){
 
                 // for item selected value
-                for (let i = 0; i < response.item.length; i++) {
-                    if (item == response.item[i].item_id) {
-                        itemName = response.item[i].item;                      
+                for (let i = 0; i < response.itemList.length; i++) {
+                    if (item == response.itemList[i].item_id) {
+                        itemName = response.itemList[i].item;                      
                     }                   
                 }
             }
@@ -441,7 +469,7 @@ $(document).ready(function(e){
         $("#tax").val($tax);
         $("#price").val($price);
         $("#quantity").val($quantity);
-        $("#discount").val($discount);
+        $("#promotion").val($discount);
 
         //add highlight class name to know which row is selected
         $(this).parents("tr").addClass('highlight');
@@ -457,22 +485,22 @@ $(document).ready(function(e){
         var item = $("#itemSel").val();
         var price = parseInt($("#price").val());   
         var quantity = parseInt($("#quantity").val());
-        // var discount = parseInt($("#discount").val());
+        var discount = parseInt($("#promotion").val());
         var tax = $("#tax").val();
         var total = parseInt($("#total").text());
 
         //to get item name and counter name
         $.ajax({
             type        : 'get',
-            url         : "{{ route('#ajaxSaleDataList') }}",
+            url         : "{{ route('#ajaxItemList') }}",
             dataType    : 'json',
             async       : false,
             success     : function(response){
 
                 // for item selected value
-                for (let i = 0; i < response.item.length; i++) {
-                    if (item == response.item[i].item_id) {
-                        itemName = response.item[i].item;                     
+                for (let i = 0; i < response.itemList.length; i++) {
+                    if (item == response.itemList[i].item_id) {
+                        itemName = response.itemList[i].item;                     
                     }                   
                 }
             }
@@ -483,38 +511,39 @@ $(document).ready(function(e){
         table.find('tr').each(function(i){
             if($(this).hasClass('highlight'))
             {
-                sub = parseInt($(this).find("td:eq(7)").text());
+                sub = parseInt($(this).find("td:eq(6)").text());
                 allTotal = total - sub;
                 $(this).find("td:eq(0)").text(date);
                 $(this).find("td:eq(1)").text(itemName);
                 $(this).find("td:eq(2)").text(item);
                 $(this).find("td:eq(3)").text(price);
                 $(this).find("td:eq(4)").text(quantity);
+                $(this).find("td:eq(5)").text(discount);
 
                 // add discount value in table
-                var value = $("input[name='rdbDiscount']:checked").val();
-                if(value == 'cash')
-                {
-                    discount = parseInt($("#cash").val());
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 1;
-                    $(this).find("td:eq(5)").text(discount);
-                    $(this).find("td:eq(6)").text(rdbValue);
+                // var value = $("input[name='rdbDiscount']:checked").val();
+                // if(value == 'cash')
+                // {
+                //     discount = parseInt($("#cash").val());
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 1;
+                //     $(this).find("td:eq(5)").text(discount);
+                //     $(this).find("td:eq(6)").text(rdbValue);
+                // }
+                // else
+                // {
+                //     percent = parseInt($("#percent").val());
+                //     discount = (percent / 100) * (price * quantity);
+                //     subTotal = (price * quantity) - discount;
+                //     rdbValue = 0;
 
-                }
-                else
-                {
-                    percent = parseInt($("#percent").val());
-                    discount = (percent / 100) * (price * quantity);
-                    subTotal = (price * quantity) - discount;
-                    rdbValue = 0;
+                //     $(this).find("td:eq(5)").text(percent);
+                //     $(this).find("td:eq(6)").text(rdbValue);
 
-                    $(this).find("td:eq(5)").text(percent);
-                    $(this).find("td:eq(6)").text(rdbValue);
+                // }
 
-                }
-                $(this).find("td:eq(7)").text(subTotal);
-                // $(this).removeClass('highlight');
+                subTotal = (price * quantity) - discount;
+                $(this).find("td:eq(6)").text(subTotal);
             }
         });
         allTotal = subTotal + allTotal;
@@ -541,20 +570,16 @@ $(document).ready(function(e){
         $("#rowID").val("");
         $("#itemSel").val(0);
         $("#price").val(0); 
-        $("#chkCounter").prop("checked" , false);
-        $("#counterSel").val(0);
         $("#quantity").val(0);
-        $("#cash").val(0);
-        $("#cash").prop('readOnly' , false);
-        $("#cash").prop('checked', true);
-        $("#percent").val(0);
-        $("#percent").prop('readOnly', true);
+        $("#promotion").val(0);
     }
 
     function save(){
         var $ary = [];
         var date, item, itemValue, price, quantity, discount, tax;
         var table = $("#tblBody");
+        $randomNo = Math.floor(Math.random() * 1000000001);
+        $voucher_code = 'BS' + $randomNo;
         table.find('tr').each(function(i){
 
             var $tds = $(this).find('td');
@@ -564,27 +589,27 @@ $(document).ready(function(e){
             price = $tds.eq(3).text();
             quantity = $tds.eq(4).text();
             discount = $tds.eq(5).text();
-            $discountValue = $tds.eq(6).text();
-            subTotal = $tds.eq(7).text();
+            subTotal = $tds.eq(6).text();
             tax = $("#tdTax").text();
             total = $("#total").text();
-
-            $purchase = {
+            $voucherDetail = {
+                'voucher_code' : $voucher_code,
+                'date' : date,
                 'item' : itemValue,
                 'price' : price,
                 'quantity' : quantity,
-                'discount' : discount,
-                'cash_percent' : $discountValue,
+                'promotion' : discount,
                 'sub_total' : subTotal,
             };
-            $ary.push($purchase);
+            $ary.push($voucherDetail);
         });
 
         $.ajax({
-                type        : "get",
+                type        : "post",
                 url         : "{{ route('#createSaleInvoice') }}",
                 dataType    :"json",
-                data        : { data    : $ary, 
+                data        : { data    : $ary,
+                                voucherCode : $voucher_code, 
                                 date    : date, 
                                 tax     : tax, 
                                 total   : total},

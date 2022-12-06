@@ -11,6 +11,7 @@ class SaleVoucher extends Model
 
     protected $fillable = [
         'voucher_id',
+        'voucher_code',
         'date',
         'tax',
         'total',
