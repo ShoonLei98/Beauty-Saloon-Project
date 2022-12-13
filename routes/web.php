@@ -115,6 +115,7 @@ Route::group(['prefix' => 'usage'], function(){
 });
 
 Route::group(['prefix' => 'invoice'], function(){
+    Route::get('ajaxServiceList', [ServiceInvoiceController::class, 'ajaxServiceList'])->name('#ajaxServiceList');
     Route::get('service', [ServiceInvoiceController::class, 'serviceInvoice'])->name('#serviceInvoice');
     Route::get('addService', [ServiceInvoiceController::class, 'addServiceInvoice'])->name('#addServiceInvoice');
     Route::post('createService', [ServiceInvoiceController::class, 'createSerivceInvoice'])->name('#createServiceInvoice');

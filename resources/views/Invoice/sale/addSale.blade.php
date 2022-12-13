@@ -376,7 +376,7 @@ $(document).ready(function(e){
         tdSubTotal = "<td>"+ subTotal +"</td>";
         $(trRow).append(tdSubTotal);
 
-        tdUD = "<td><button class='btn btn-info btn-sm btn-edit'>Edit</button><button class='btn btn-danger btn-sm btn-delete'>Delete</button></td>"
+        tdUD = "<td><button class='btn btn-info btn-sm btn-edit'><small><i class='fa-solid fa-pen-to-square'></i></small></button><button class='btn btn-danger btn-sm btn-delete'><small><i class='fa-sharp fa-solid fa-trash'></i></small></button></td>"
         $(trRow).append(tdUD);
         //set data to table row
 
@@ -562,7 +562,6 @@ $(document).ready(function(e){
         $("#divEdit").hide();
         $("#divAdd").show();
     }
-
 
     // clear input field after added to table
     function cleanForm()
